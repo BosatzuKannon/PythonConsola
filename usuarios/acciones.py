@@ -22,5 +22,45 @@ class Acciones:
     def login(self):
         print("---- Inicio de Sesión ----")
 
-        email       = input("E-mail: ")
-        passwd      = input("Password: ")
+        try: 
+            email       = input("E-mail: ")
+            passwd      = input("Password: ")
+
+            user = usr.Usuario('','',email, passwd)
+            login = user.identificar()
+
+            if email == str(login[3]):
+                print("buen login")
+                self.procimasAcciones(login)                
+        
+        except Exception as e:
+            print("Credenciales incorrectas")
+
+    def procimasAcciones(self, usuario):
+        print("""\n
+        --------- Administración de notas ---------
+
+            - Crear nota (crear)
+            - Mostrar notas (mostrar)
+            - Eliminar notas (eliminar)
+            - Salir (salir)
+
+        """)
+
+        accion = input("¿Que quieres hacer?: ").upper()
+
+        if accion == "CREAR":
+            print("crear nota")
+            self.procimasAcciones(usuario)
+
+        elif accion == "MOSTRAR":
+            print("mostrar nota")
+            self.procimasAcciones(usuario)
+
+        elif accion == "ELIMINAR":
+            print("ELIMINAR nota")
+            self.procimasAcciones(usuario)
+
+        elif accion == "SALIR":
+            print(f"\nGracias por usar notas. {usuario[1]} ten un exelente día!!!")
+            exit()

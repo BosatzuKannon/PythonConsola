@@ -1,15 +1,10 @@
-import mysql.connector
 import datetime
+import hashlib
+from usuarios import conexion as db
 
-database = mysql.connector.connect(
-    host        = "localhost",
-    user        = "root",
-    passwd      = "",
-    database    = "master_python",
-    port        = 3306
-)
-
-cursor = database.cursor(buffered = True)
+connect = db.conectar()
+database = connect[0]
+cursor = connect[1]
 
 class Usuario:
 
@@ -22,12 +17,30 @@ class Usuario:
     def registrar(self):
         
         fecha = datetime.datetime.now()
+        cifrado = hashlib.sha256()
+        cifrado.update(self.passwd.encode('utf8'))
         query = "INSERT INTO usuarios VALUES(null, %s, %s, %s, %s, %s)"
-        usuario = (self.nombre, self.apellido, self.email, self.passwd, fecha)
+        usuario = (self.nombre, self.apellido, self.email, cifrado.hexdigest(), fecha)
+        
+        try:
+            cursor.execute(query, usuario)
+            database.commit()
+            result = [cursor.rowcount, self]
+        except:
+            result = [0, self]
 
-        cursor.execute(query, usuario)
-        database.commit()
-        return [cursor.rowcount, self]
+        return result
+                
 
     def identificar(self):
-        self.nombre
+        query = "SELECT * FROM usuarios WHERE email = %s AND password = %s"
+
+        cifrado = hashlib.sha256()
+        cifrado.update(self.passwd.encode('utf8'))
+
+        usuario = (self.email, cifrado.hexdigest())
+
+        cursor.execute(query, usuario)
+        result = cursor.fetchone()
+
+        return result
