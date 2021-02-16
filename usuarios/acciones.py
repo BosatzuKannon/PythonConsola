@@ -59,7 +59,7 @@ class Acciones:
             self.procimasAcciones(usuario)
 
         elif accion == "ELIMINAR":
-            print("ELIMINAR nota")
+            opt.borrar(usuario)
             self.procimasAcciones(usuario)
 
         elif accion == "SALIR":
