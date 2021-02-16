@@ -1,5 +1,5 @@
 from usuarios import usuario as usr
-
+import notas.acciones
 class Acciones:
 
     def registro(self):
@@ -48,13 +48,14 @@ class Acciones:
         """)
 
         accion = input("¿Que quieres hacer?: ").upper()
+        opt = notas.acciones.Acciones()
 
         if accion == "CREAR":
-            print("crear nota")
+            opt.crear(usuario)
             self.procimasAcciones(usuario)
 
         elif accion == "MOSTRAR":
-            print("mostrar nota")
+            opt.mostrar(usuario)
             self.procimasAcciones(usuario)
 
         elif accion == "ELIMINAR":
